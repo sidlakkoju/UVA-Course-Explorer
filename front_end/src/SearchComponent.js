@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 function SearchComponent() {
   const [searchInput, setSearchInput] = useState("");
-  const [searchResults, setSearchResults] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
 
   const handleInputChange = (event) => {
     setSearchInput(event.target.value);
@@ -17,8 +18,18 @@ function SearchComponent() {
       body: JSON.stringify({ searchInput }),
     });
     const data = await response.json();
-    setSearchResults(data.results);
+    if (data && Array.isArray(data)) {
+      const searchResults = data.map((result, index) => (
+        <div key={index}>
+          <p>{result.name}: {result.description}</p>
+        </div>
+      ));
+      setSearchResults(searchResults);
+    }
   };
+  
+  
+  
 
   return (
     <div>
