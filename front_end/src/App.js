@@ -1,7 +1,18 @@
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  
+
+  const [members, setMembers] = useState([]);
+  useEffect(() => {
+    fetch('/members').then(res => res.json()).then(data => {
+      setMembers(data.members);
+      console.log(data.members);
+    });
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +28,7 @@ function App() {
         >
           Learn React
         </a>
+        <p>The current time is {members}.</p>
       </header>
     </div>
   );
