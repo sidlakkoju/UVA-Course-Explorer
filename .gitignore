@@ -1,3 +1,4 @@
 back_end/venv
 env
 back_end/static_data_with_emebddings.csv
+back_end/config.py
