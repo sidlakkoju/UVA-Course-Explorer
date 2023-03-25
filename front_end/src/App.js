@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import SearchComponent from './SearchComponent';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
   
-
+  // Testing Code Remove Later
   const [members, setMembers] = useState([]);
   useEffect(() => {
     fetch('/members').then(res => res.json()).then(data => {
@@ -12,23 +13,15 @@ function App() {
       console.log(data.members);
     });
   }, []);
+  // END Testing Code 
+
+
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <p>The current time is {members}.</p>
+        <SearchComponent />
       </header>
     </div>
   );
