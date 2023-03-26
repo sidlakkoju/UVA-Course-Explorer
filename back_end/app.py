@@ -136,13 +136,22 @@ def search():
 
 @app.route('/detailed_info', methods=['POST'])
 def get_detailed_info():
+
+    print(detailed_info.keys())
+
+    print("Getting detailed info")
+
     catalog_nbr = str(request.json['catalog_number'])
     subject_mnemonic = str(request.json['mnemonic'])
     if (subject_mnemonic, catalog_nbr) in detailed_info:
+        print("About to return detailed info initially")
+        print(detailed_info[(subject_mnemonic, catalog_nbr)])
         return detailed_info[(subject_mnemonic, catalog_nbr)]
     else:
         while (subject_mnemonic, catalog_nbr) not in detailed_info:
             time.sleep(0.5)
+        print("About to return detailed info after waiting")
+        print(detailed_info[(subject_mnemonic, catalog_nbr)])
         return detailed_info[(subject_mnemonic, catalog_nbr)]
 
 
