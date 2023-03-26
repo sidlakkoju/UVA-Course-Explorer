@@ -58,7 +58,7 @@ const CourseResultComponent = (props) => {
   
   return (
     <React.Fragment>
-      <div className="accordion">
+      <div className="accordion" style={{paddingBottom:'20px'}}>
         <div className="accordion-item">
           <div 
           className="accordion-title"

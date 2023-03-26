@@ -55,7 +55,7 @@ function SearchComponent() {
   return (
     <div>
       <div><textarea placeholder="What do you want to learn about?" value={searchInput} onChange={handleInputChange} /></div>
-      <div><button onClick={handleSearch}>Search</button></div>
+      <div><button onClick={handleSearch} style={{fontFamily:'Courier New', fontWeight:'bold'}}>Search</button></div>
       <div>{isLoading && <img src={sabreImage} className="App-logo" alt="logo" />}</div>
       <div>{isLoading && <h5>Running the OpenAI Embedding Engine...</h5>}</div>
       <div>{searchResults}</div>

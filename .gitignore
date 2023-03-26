@@ -5,3 +5,4 @@ env
 back_end/static_data_with_emebddings.csv
 back_end/config.py
 back_end/__pycache__
+front_end/public/graph.html

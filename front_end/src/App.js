@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import SearchComponent from './SearchComponent';
-import logo from './logo.svg';
 import './App.css';
+import PlotlyGraph from './PlotlyGraph';
+
+
+
+// import html from "./graph.html";
+
+
 
 function App() {
+  
   
   // Testing Code Remove Later
   const [members, setMembers] = useState([]);
@@ -20,7 +27,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <SearchComponent />
+
+        <p style={{fontFamily:'Courier', fontSize:'60px'}}>UVA Course Explorer</p>
+        <div><PlotlyGraph src="/graph.html" width="2000px" height="850px" /></div>
+        
+        <div><SearchComponent /></div>
+        
       </header>
     </div>
   );
