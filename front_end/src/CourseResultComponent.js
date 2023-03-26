@@ -10,6 +10,7 @@ subject
 
 const CourseResultComponent = (props) => {
   const [isActive, setIsActive] = useState(false);
+  const [sessions, setSessions] = useState([]);
 
 
   const handleClick = async () => {
@@ -21,18 +22,18 @@ const CourseResultComponent = (props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ catalog_number: props.catalog_number, mnemonic: props.subject}),
+      body: JSON.stringify({ catalog_number: props.catalog_number, mnemonic: props.mnemonic}),
     });
     const data = await response.json();
 
     if (data && Array.isArray(data)) {
-      const searchResults = data.map((result, index) => (
+      const sessions = data.map((result, index) => (
         <div key={index}>
-          <body>{result.location}</body>
+          <body> {result.instructor}, {result.location}, {result.enrollment_capacity}, {result.current_enrolled}, {result.waitlist_capacity}, {result.current_waitlisted}, {result.days}, {result.start_time}, {result.end_time}</body>
         </div>
       ));
-      console.log(searchResults);
-      setSearchResults(searchResults);
+      console.log(sessions);
+      setSessions(sessions);
     }
   }
   
@@ -53,7 +54,7 @@ const CourseResultComponent = (props) => {
             <body>{props.description}</body>
             </div>
         </div>
-        {isActive && <div className="accordion-content"> Add Stuff Here </div>}
+        {isActive && <div className="accordion-content"> {sessions} </div>}
       </div>
     </React.Fragment>
   );

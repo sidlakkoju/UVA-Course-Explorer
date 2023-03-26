@@ -12,7 +12,6 @@ import json
 from datetime import datetime
 
 
-
 openai.api_key = openai_key
 
 
@@ -117,11 +116,8 @@ def populate_detailed_info(json_results):
 
         detailed_info[(subject_mnemonic, catalog_nbr)] = detailed_info_array
     
-    print(detailed_info)
+    #print(detailed_info)
     
-
-
-
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -132,30 +128,31 @@ def search():
     return json_results
 
 
-
-
 @app.route('/detailed_info', methods=['POST'])
 def get_detailed_info():
 
+    '''
     print(detailed_info.keys())
 
     print("Getting detailed info")
+    '''
 
     catalog_nbr = str(request.json['catalog_number'])
     subject_mnemonic = str(request.json['mnemonic'])
+
+    #print((subject_mnemonic, catalog_nbr))
+
     if (subject_mnemonic, catalog_nbr) in detailed_info:
-        print("About to return detailed info initially")
-        print(detailed_info[(subject_mnemonic, catalog_nbr)])
+        #print("About to return detailed info initially")
+        #print(detailed_info[(subject_mnemonic, catalog_nbr)])
         return detailed_info[(subject_mnemonic, catalog_nbr)]
     else:
         while (subject_mnemonic, catalog_nbr) not in detailed_info:
             time.sleep(0.5)
-        print("About to return detailed info after waiting")
-        print(detailed_info[(subject_mnemonic, catalog_nbr)])
+        #print("About to return detailed info after waiting")
+        #print(detailed_info[(subject_mnemonic, catalog_nbr)])
         return detailed_info[(subject_mnemonic, catalog_nbr)]
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-    #new_search_results = jsonify(test_return_array)
