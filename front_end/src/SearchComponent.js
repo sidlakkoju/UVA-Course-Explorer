@@ -6,6 +6,7 @@ import CourseResultComponent from './CourseResultComponent';
 function SearchComponent() {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const handleInputChange = (event) => {
@@ -13,6 +14,7 @@ function SearchComponent() {
   };
 
   const handleSearch = async () => {
+    setIsLoading(true);
     const response = await fetch("/search", {
       method: "POST",
       headers: {
@@ -21,6 +23,7 @@ function SearchComponent() {
       body: JSON.stringify({ searchInput }),
     });
     const data = await response.json();
+    setIsLoading(false);
     if (data && Array.isArray(data)) {
       const searchResults = data.map((result, index) => (
         <div key={index}>
@@ -45,6 +48,7 @@ function SearchComponent() {
     <div>
       <textarea value={searchInput} onChange={handleInputChange} />
       <button onClick={handleSearch}>Search</button>
+      {isLoading && <p>Loading...</p>}
       <div>{searchResults}</div>
       
     </div>

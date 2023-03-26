@@ -41,7 +41,7 @@ const CourseResultComponent = (props) => {
           className="accordion-title"
           onClick={() => setIsActive(!isActive)}>
             <div>
-              {props.catalog_number}: {props.name}
+              {props.catalog_number}: {props.name} ({props.level})
             </div>
             <div>{isActive ? '-' : '+'}</div>
           </div>
