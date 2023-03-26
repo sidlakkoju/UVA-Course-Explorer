@@ -31,9 +31,7 @@ def get_top_results_json(query, n=10):
                            'acad_career_descr' : 'level',
                            'catalog_nbr': 'catalog_number',
                            'class_nbr': 'class_number',
-
-                           'subject_descr': 'subject'
-                           })
+                           'subject_descr': 'subject'})
    
 
    for c in df.columns:
