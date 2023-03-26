@@ -61,8 +61,8 @@ def populate_detailed_info(json_results):
     global detailed_info
     json_results = json.loads(json_results)
     for i in range(len(json_results)):      # for each search result
-        catalog_nbr = json_results[i]['catalog_number']
-        subject_mnemonic = json_results[i]['mnemonic']
+        catalog_nbr = str(json_results[i]['catalog_number'])
+        subject_mnemonic = str(json_results[i]['mnemonic'])
         detailed_info_url = get_detailed_info_url(catalog_nbr, subject_mnemonic)
         r = requests.get(detailed_info_url)
         array = r.json()
@@ -136,8 +136,8 @@ def search():
 
 @app.route('/detailed_info', methods=['POST'])
 def get_detailed_info():
-    catalog_nbr = request.json['catalog_number']
-    subject_mnemonic = request.json['mnemonic']
+    catalog_nbr = str(request.json['catalog_number'])
+    subject_mnemonic = str(request.json['mnemonic'])
     if (subject_mnemonic, catalog_nbr) in detailed_info:
         return detailed_info[(subject_mnemonic, catalog_nbr)]
     else:
