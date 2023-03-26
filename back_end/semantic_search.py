@@ -19,6 +19,7 @@ def get_top_results_df(query, n=10):
 
    query_embedding = get_embedding(query, model='text-embedding-ada-002')
    df['similarities'] = df.ada_embedding.apply(lambda x: cosine_similarity(x, query_embedding))
+   df['similarities'] = df['similarities'].round(3)
    res = df.sort_values('similarities', ascending=False).head(n)
    return res
 

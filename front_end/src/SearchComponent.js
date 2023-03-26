@@ -41,6 +41,8 @@ function SearchComponent() {
             subject={result.subject}
             description = {result.description}
             mnemonic = {result.mnemonic}
+            similarity_score = {result.similarity_score}
+            credits = {result.credits}
           />
         </div>
       ));
@@ -55,7 +57,7 @@ function SearchComponent() {
       <div><textarea placeholder="What do you want to learn about?" value={searchInput} onChange={handleInputChange} /></div>
       <div><button onClick={handleSearch}>Search</button></div>
       <div>{isLoading && <img src={sabreImage} className="App-logo" alt="logo" />}</div>
-      <div>{isLoading && <h5>Loading...</h5>}</div>
+      <div>{isLoading && <h5>Running the OpenAI Embedding Engine...</h5>}</div>
       <div>{searchResults}</div>
     </div>
   );

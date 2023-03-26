@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 
+
+import SessionResultComponent from './SessionResultComponent';
+
+
 /*
 name
 level
@@ -11,10 +15,12 @@ subject
 const CourseResultComponent = (props) => {
   const [isActive, setIsActive] = useState(false);
   const [sessions, setSessions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const handleClick = async () => {
     setIsActive(!isActive);
+    setIsLoading(true);
     console.log("clicked");
 
     const response = await fetch("/detailed_info", {
@@ -25,11 +31,23 @@ const CourseResultComponent = (props) => {
       body: JSON.stringify({ catalog_number: props.catalog_number, mnemonic: props.mnemonic}),
     });
     const data = await response.json();
+    setIsLoading(false);
 
     if (data && Array.isArray(data)) {
       const sessions = data.map((result, index) => (
         <div key={index}>
-          <body> {result.instructor}, {result.location}, {result.enrollment_capacity}, {result.current_enrolled}, {result.waitlist_capacity}, {result.current_waitlisted}, {result.days}, {result.start_time}, {result.end_time}</body>
+          <SessionResultComponent 
+          instructor = {result.instructor}
+          type = {result.type}
+          location = {result.location}
+          enrollment_capacity = {result.enrollment_capacity}
+          current_enrolled = {result.current_enrolled}
+          waitlist_capacity = {result.waitlist_capacity}
+          current_waitlisted = {result.current_waitlisted}
+          days = {result.days}
+          start_time = {result.start_time}
+          end_time = {result.end_time}
+          />
         </div>
       ));
       console.log(sessions);
@@ -51,10 +69,15 @@ const CourseResultComponent = (props) => {
             <div>{isActive ? '-' : '+'}</div>
           </div>
           <div className="accordion-content">
+            <body style={{fontWeight:'bold'}}>Similarity Score: {props.similarity_score}</body>
+            <body style={{fontWeight:'bold'}}>Credits: {props.credits}</body>
             <body>{props.description}</body>
-            </div>
+          </div>
         </div>
-        {isActive && <div className="accordion-content"> {sessions} </div>}
+        {isActive && <div className="accordion-content">
+        <div>{isLoading && <h5>Sorry, SIS is being slow gimme a sec :)</h5>}</div> 
+        {sessions} 
+        </div>}
       </div>
     </React.Fragment>
   );
