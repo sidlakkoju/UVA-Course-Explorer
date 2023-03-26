@@ -10,7 +10,7 @@ function App() {
   useEffect(() => {
     fetch('/members').then(res => res.json()).then(data => {
       setMembers(data.members);
-      console.log(data.members);
+      //console.log(data.members);
     });
   }, []);
   // END Testing Code 

@@ -40,10 +40,11 @@ function SearchComponent() {
             class_number={result.class_number}
             subject={result.subject}
             description = {result.description}
+            mnemonic = {result.mnemonic}
           />
         </div>
       ));
-      console.log(searchResults);
+      //console.log(searchResults);
       setSearchResults(searchResults);
     }
   };
