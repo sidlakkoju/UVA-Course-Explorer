@@ -9,14 +9,12 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 
-
-
     <p id="hover-info">Hover over a point to see more information.</p>
 
 
-
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+
     // Get the Plotly graph div by its ID
     var graphDiv = document.getElementById('graph-id');
 
@@ -26,22 +24,36 @@
     // Add a hover event listener to the Plotly graph
     graphDiv.on('plotly_hover', function(data) {
       // Get the subject information from the custom data
+      console.log(data);
       var subject = data.points[0].customdata[0];
+
+      console.log(data);
 
       // Update the hover information text
       hoverInfo.innerHTML = 'You are hovering over subject: ' + subject;
+      console.log('You are hovering over subject: ' + subject);
     });
+
 
     // Add a unhover event listener to reset the hover information text
     graphDiv.on('plotly_unhover', function() {
       hoverInfo.innerHTML = 'Hover over a point to see more information.';
     });
+
+
+
   });
 </script>
    
    <script>
-      var plot = "{{ plot|safe }}";
+      console.log("{{plot|safe}}");
+      var plot = "{{plot|safe}}";
       document.getElementById('plot').innerHTML = plot;
+
+    </script>
+
+
+    <script>
     </script>
 
 

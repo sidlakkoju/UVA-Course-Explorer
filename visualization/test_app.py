@@ -10,14 +10,18 @@ import pickle
 
 
 # Create a Flask application
-app = Flask(__name__)
+# app = Flask(__name__)
 
 def test():
     # Load data
     df = pd.read_csv('../back_end/static_data_with_emebddings.csv')
+    df["catalog_nbr"] = df["catalog_nbr"].astype(str)
+
+    df["subject_plus_num"] = df["subject_descr"]+ " " + df["catalog_nbr"]+ " - " + df['descr']
+    print(df['subject_plus_num'])
     
-    matrix = np.array(df.ada_embedding.apply(eval).to_list() )  
-   
+
+    # matrix = np.array(df.ada_embedding.apply(eval).to_list() )  
     # tsne = TSNE(n_components=3, perplexity=15, random_state=42, init='random', learning_rate=200, )
     # vis_dims = tsne.fit_transform(matrix)
     # apply PCA to reduce the dimensionality of the embedding vectors
@@ -31,19 +35,24 @@ def test():
 
     with open('vis_dims.pkl', 'rb') as f:
         vis_dims = pickle.load(f)
-    
 
-    fig = px.scatter_3d(vis_dims, x=0, y=1, z=2, opacity=0, color=df["subject_descr"])
-    
+    graph_df = pd.DataFrame(vis_dims, columns=['x', 'y', 'z'])
+    graph_df["subject_plus_num"] = df["subject_plus_num"]  
+    graph_df["subject_descr"] = df["subject_descr"]
+
+    fig = px.scatter_3d(graph_df, x='x', y='y', z='z', opacity=0, color="subject_descr", hover_name="subject_plus_num")
+
     
     
     # fig.update_traces(customdata=df["subject_descr"].values[:, np.newaxis])
     # Create the 3D plot using Plotly
     # fig = px.scatter_3d(vis_dims, x=0, y=1, z=2, opacity=0, color = df["subject_descr"])
 
-    fig.update_traces(hovertemplate='<b>Subject:</b> %{customdata[0]}<extra></extra>', customdata=df["subject_descr"].values[:, np.newaxis])
-    
-    
+    # fig.update_traces(hovertemplate='<b></b> %{customdata[0]}<extra></extra>', customdata=df["subject_plus_num"].values[:, np.newaxis])
+    # fig.update_traces(hovertemplate='<b></b> %{customdata}<extra></extra>', customdata=df["subject_plus_num"].values)
+
+
+
     fig.update_scenes(xaxis_visible=False, yaxis_visible=False,zaxis_visible=False )
 
     # make the background and space around points transparent
@@ -53,72 +62,77 @@ def test():
 
     # remove gridlines
     fig.update_layout(scene=dict(xaxis=dict(showgrid=False), yaxis=dict(showgrid=False), zaxis=dict(showgrid=False)))   
+    
     # make the background transparent
-    # fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
     fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
-    return render_template('plot.html', plot=fig.to_html(full_html=False))
+    fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
+    fig.show()
+
+    
+    fig.write_html("graph.html")
+
+    # return render_template('plot.html', plot=fig.to_html(full_html=False))
 
     # Show the plot
     # fig.show()
 
     # pyo.plot(fig, filename='my_plot.html', output_type='div', include_plotlyjs=False, auto_open=False, config={'displayModeBar': False})
 
-
+test()
 
 
 # test()
 
 # Define a route for the webpage
-@app.route('/')
-def index():
+# @app.route('/')
+# def index():
     
-        # Load data
-    df = pd.read_csv('../back_end/static_data_with_emebddings.csv')
+#         # Load data
+#     df = pd.read_csv('../back_end/static_data_with_emebddings.csv')
+#     df["subject_plus_num"] = df["subject_descr"] + " " + df["catalog_nbr"].astype(str)
     
-    matrix = np.array(df.ada_embedding.apply(eval).to_list() )  
+#     matrix = np.array(df.ada_embedding.apply(eval).to_list() )  
    
-    # tsne = TSNE(n_components=3, perplexity=15, random_state=42, init='random', learning_rate=200, )
-    # vis_dims = tsne.fit_transform(matrix)
-    # apply PCA to reduce the dimensionality of the embedding vectors
+#     # tsne = TSNE(n_components=3, perplexity=15, random_state=42, init='random', learning_rate=200, )
+#     # vis_dims = tsne.fit_transform(matrix)
+#     # apply PCA to reduce the dimensionality of the embedding vectors
 
-    # pca = PCA(n_components=3)
-    # vis_dims = pca.fit_transform(matrix)
+#     # pca = PCA(n_components=3)
+#     # vis_dims = pca.fit_transform(matrix)
 
 
-    # with open('vis_dims.pkl', 'wb') as f:
-    #     pickle.dump(vis_dims, f)
+#     # with open('vis_dims.pkl', 'wb') as f:
+#     #     pickle.dump(vis_dims, f)
 
-    with open('vis_dims.pkl', 'rb') as f:
-        vis_dims = pickle.load(f)
+#     with open('vis_dims.pkl', 'rb') as f:
+#         vis_dims = pickle.load(f)
+
+
+#     fig = px.scatter_3d(vis_dims, x=0, y=1, z=2, opacity=0, color=df["subject_descr"])
     
+#     # fig.update_traces(customdata=df["subject_descr"].values[:, np.newaxis])
+#     # Create the 3D plot using Plotly
+#     # fig = px.scatter_3d(vis_dims, x=0, y=1, z=2, opacity=0, color = df["subject_descr"])
 
-    fig = px.scatter_3d(vis_dims, x=0, y=1, z=2, opacity=0, color=df["subject_descr"])
-    
-    
-    
-    # fig.update_traces(customdata=df["subject_descr"].values[:, np.newaxis])
-    # Create the 3D plot using Plotly
-    # fig = px.scatter_3d(vis_dims, x=0, y=1, z=2, opacity=0, color = df["subject_descr"])
+#     fig.update_traces(hovertemplate='<b>Subject:</b> %{customdata[0]}<extra></extra>', customdata=df["subject_plus_num"].values[:, np.newaxis])
+#     fig.update_scenes(xaxis_visible=False, yaxis_visible=False,zaxis_visible=False)
 
-    fig.update_traces(hovertemplate='<b>Subject:</b> %{customdata[0]}<extra></extra>', customdata=df["subject_descr"].values[:, np.newaxis])
-    fig.update_scenes(xaxis_visible=False, yaxis_visible=False,zaxis_visible=False )
+#     # make the background and space around points transparent
+#     fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
+#     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)')
+#     fig.update_layout(plot_bgcolor='rgba(0,0,0,0)')
 
-    # make the background and space around points transparent
-    fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
-    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)')
-    fig.update_layout(plot_bgcolor='rgba(0,0,0,0)')
-
-    # remove gridlines
-    fig.update_layout(scene=dict(xaxis=dict(showgrid=False), yaxis=dict(showgrid=False), zaxis=dict(showgrid=False)))   
-    # make the background transparent
-    # fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
-    fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
-    return render_template('plot.html', plot=fig.to_html(full_html=False))
+#     # remove gridlines
+#     fig.update_layout(scene=dict(xaxis=dict(showgrid=False), yaxis=dict(showgrid=False), zaxis=dict(showgrid=False)))   
+#     # make the background transparent
+#     # fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
+#     fig.update_layout(scene=dict(bgcolor='rgba(0,0,0,0)'))
+#     return render_template('plot.html', plot=fig.to_html(full_html=False))
 
     
-    # Generate some random data
-    # Generate some random data
-    # Generate some random data
+    # # Generate some random data
+    # # Generate some random data
+    # # Generate some random data
     # x, y, z = np.random.multivariate_normal([0,0,0], np.eye(3), 500).transpose()
 
     # # Create a 3D scatter plot
@@ -142,6 +156,5 @@ def index():
     # Return the HTML for the plot using Plotly's embed API
     # return render_template('plot.html', plot=fig.to_html(full_html=False))
 
-# # Run the Flask application
-if __name__ == '__main__':
-    app.run(debug=True)
+# Run the Flask application
+# s
