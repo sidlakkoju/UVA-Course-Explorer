@@ -3,18 +3,33 @@
 <head>
 	<title>Plotly Hover Example</title>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-	<script>
+	
+    
+    
+    <script>
 		function handleHover(data) {
 			var pointIndex = data.points[0].pointNumber;
 			var pointText = "You are hovering over point " + pointIndex + "!";
 			document.getElementById("hover-text").innerHTML = pointText;
 		}
 	</script>
+
+
+
+
 </head>
+
+
+
+
 <body>
 	<div id="plot-container"></div>
 	<p id="hover-text">Hover over a point on the plot to see a change!</p>
-	<script>
+	
+    
+    
+    
+    <script>
 		var data = [{
 			x: [1, 2, 3, 4, 5],
 			y: [6, 7, 8, 9, 10],
@@ -26,6 +41,9 @@
 			},
 			type: 'scatter3d'
 		}];
+
+
+
 		var layout = {
 			scene: {
 				camera: {
@@ -41,12 +59,19 @@
 		var config = {
 			displayModeBar: false
 		};
+
+        
 		var plotContainer = document.getElementById('plot-container');
 		Plotly.newPlot(plotContainer, data, layout, config);
 		plotContainer.on('plotly_hover', handleHover);
 		plotContainer.on('plotly_unhover', function() {
 			document.getElementById("hover-text").innerHTML = "Hover over a point on the plot to see a change!";
 		});
+
+
 	</script>
 </body>
+
+
+
 </html>
