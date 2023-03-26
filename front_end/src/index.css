@@ -7,6 +7,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+textarea {
+  width: 1000px;
+  height: 100%;
+  border: none;
+  background: #1a3f46;
+  color: #fff;
+  font-size: 20px;
+  padding: 2rem;
+  resize: none;
+}
+
+button {
+  background: #1a3f46;
+  color: #fff;
+  font-size: 20px;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 1rem;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

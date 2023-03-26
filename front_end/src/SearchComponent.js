@@ -3,6 +3,8 @@ import CourseResultComponent from './CourseResultComponent';
 
 import logo from './logo.svg';
 import './App.css';
+import sabreImage from './sabre.png';
+
 
 
 
@@ -49,9 +51,10 @@ function SearchComponent() {
 
   return (
     <div>
-      <textarea value={searchInput} onChange={handleInputChange} />
-      <button onClick={handleSearch}>Search</button>
-      <div>{isLoading && <img src={logo} className="App-logo" alt="logo" />}</div>
+      <div><textarea value={searchInput} onChange={handleInputChange} /></div>
+      <div><button onClick={handleSearch}>Search</button></div>
+      <div>{isLoading && <img src={sabreImage} className="App-logo" alt="logo" />}</div>
+      <div>{isLoading && <h5>Loading...</h5>}</div>
       <div>{searchResults}</div>
     </div>
   );
