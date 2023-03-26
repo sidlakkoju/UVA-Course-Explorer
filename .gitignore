@@ -1,2 +1,4 @@
+.gitignore
 back_end/venv
+back_end/config.py
 env
