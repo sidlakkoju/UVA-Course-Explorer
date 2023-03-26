@@ -83,6 +83,11 @@ def populate_detailed_info(json_results):
                 session_data['instructor'] = "N/A"
 
             try:
+                session_data['type'] = session['component']
+            except:
+                session_data['type'] = "N/A"
+
+            try:
                 session_data['location'] = session['meetings'][0]['facility_descr']
             except:
                 session_data['location'] = "N/A"

@@ -33,7 +33,8 @@ def get_top_results_json(query, n=10):
                            'class_nbr': 'class_number',
                            'subject_descr': 'subject',
                            'subject': 'mnemonic',
-                           })
+                           'similarities': 'similarity_score',
+                           'units': 'credits'})
    
 
 #    for c in df.columns:
