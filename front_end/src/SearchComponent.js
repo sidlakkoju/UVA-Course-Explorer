@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import CourseResultComponent from './CourseResultComponent';
+
+
 
 function SearchComponent() {
   const [searchInput, setSearchInput] = useState("");
@@ -21,14 +24,21 @@ function SearchComponent() {
     if (data && Array.isArray(data)) {
       const searchResults = data.map((result, index) => (
         <div key={index}>
-          <p>{result.name}: {result.description}</p>
+          
+          <CourseResultComponent  
+            name={result.name}
+            level={result.level}
+            catalog_number={result.catalog_number}
+            class_number={result.class_number}
+            subject={result.subject}
+            description = {result.description}
+          />
         </div>
       ));
+      console.log(searchResults);
       setSearchResults(searchResults);
     }
   };
-  
-  
   
 
   return (
@@ -36,6 +46,7 @@ function SearchComponent() {
       <textarea value={searchInput} onChange={handleInputChange} />
       <button onClick={handleSearch}>Search</button>
       <div>{searchResults}</div>
+      
     </div>
   );
 }

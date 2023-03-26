@@ -1,4 +1,7 @@
+.gitignore
 back_end/venv
+back_end/config.py
 env
 back_end/static_data_with_emebddings.csv
 back_end/config.py
+back_end/__pycache__
