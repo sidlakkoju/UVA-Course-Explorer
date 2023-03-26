@@ -57,7 +57,7 @@ def parse_time(time_string, time_format = '%H.%M.%S.%f%z'):
 
 
 
-def get_detailed_info(json_results):
+def populate_detailed_info(json_results):
     global detailed_info
     json_results = json.loads(json_results)
     for i in range(len(json_results)):      # for each search result
@@ -127,7 +127,7 @@ def get_detailed_info(json_results):
 def search():
     search_input = request.json['searchInput']
     json_results = get_top_results_json(search_input, n=10)
-    t = threading.Thread(target=get_detailed_info, args=(json_results,))
+    t = threading.Thread(target=populate_detailed_info, args=(json_results,))
     t.start()
     return json_results
 
