@@ -41,8 +41,7 @@ def test():
     graph_df["subject_descr"] = df["subject_descr"]
 
     fig = px.scatter_3d(graph_df, x='x', y='y', z='z', opacity=0, color="subject_descr", hover_name="subject_plus_num")
-
-    
+    fig.update_layout(font_color="white")
     
     # fig.update_traces(customdata=df["subject_descr"].values[:, np.newaxis])
     # Create the 3D plot using Plotly
@@ -69,7 +68,7 @@ def test():
     fig.show()
 
     
-    fig.write_html("graph.html")
+    fig.write_html("graph.html", auto_open=True, full_html=True, include_plotlyjs='cdn')
 
     # return render_template('plot.html', plot=fig.to_html(full_html=False))
 
