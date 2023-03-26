@@ -26,17 +26,19 @@ def get_top_results_df(query, n=10):
 def get_top_results_json(query, n=10):
    df = get_top_results_df(query, n)
 #    print(df)
-   df.drop(columns=['ada_embedding', 'similarities', 'n_tokens', 'acad_org', 'class_nbr', 'subject'], inplace=True)
+   df.drop(columns=['ada_embedding', 'n_tokens', 'acad_org', 'class_nbr'], inplace=True)
    df = df.rename(columns={'descr': 'name',
                            'acad_career_descr' : 'level',
                            'catalog_nbr': 'catalog_number',
                            'class_nbr': 'class_number',
-                           'subject_descr': 'subject'})
+                           'subject_descr': 'subject',
+                           'subject': 'mnemonic',
+                           })
    
 
-   for c in df.columns:
-       print(df.iloc[0][c])
-   print(df.to_json(orient='records'))
+#    for c in df.columns:
+#        print(df.iloc[0][c])
+#    print(df.to_json(orient='records'))
    return df.to_json(orient='records')
 
 
