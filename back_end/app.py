@@ -6,6 +6,8 @@ from config import openai_key
 import openai
 import numpy as np
 from semantic_search import *
+import threading
+import requests
 
 openai.api_key = openai_key
 
@@ -16,7 +18,29 @@ test_return_array = [
     {'name': 'Introduction to Sociology', 'level': '1', 'catalog_number': 'STS1500', 'class_number': '1', 'subject': 'Sociology', 'description': 'This course is an introduction to the sociological study of human behavior. It covers the basic concepts and theories of sociology, including socialization, culture, social structure, social interaction, and social change. It also covers the basic concepts and theories of sociology, including socialization, culture, social structure, social interaction, and social change.'}
 ]
 
+
+detailed_info = {}
+
 app = Flask(__name__)
+
+
+
+# class for query builder?
+def get_base_url(year=2023, term="spring"):
+    year_str = str(year)[-2:]
+    term_num = 8
+    if term == "spring":
+        term_num = 2
+    
+    return f"https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1{year_str}{term_num}"
+
+
+
+
+def get_detailed_info_url(catalog_nbr, subject, year=2023, term="spring"):
+    base_url = get_base_url(year, term)
+    return f"{base_url}&subject={subject}&catlog_nbr={catalog_nbr}"
+
 
 
 # Test route
@@ -25,10 +49,31 @@ def get_members():
     return {'members': ['John', 'Paul', 'George', 'Ringo']}
 
 
+
+
+def get_detailed_info(json_results):
+    global detailed_info
+    for i in range(len(json_results)):
+        catalog_nbr = json_results[i]['catalog_nbr']
+        subject = json_results[i]['subject']
+
+
+
+        detailed_info_url = get_detailed_info_url(catalog_nbr, subject)
+        r = requests.get(detailed_info_url)
+        array = r.json()
+
+        print(array)
+
+
 @app.route('/search', methods=['POST'])
 def search():
     search_input = request.json['searchInput']
     json_results = get_top_results_json(search_input, n=10)
+
+    t = threading.Thread(target=get_detailed_info, args=(json_results,))
+    t.start()
+    t.join()
     return json_results
 
 
