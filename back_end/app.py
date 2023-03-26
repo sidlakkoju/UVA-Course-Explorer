@@ -7,6 +7,7 @@ import openai
 import numpy as np
 from semantic_search import *
 
+
 openai.api_key = openai_key
 
 

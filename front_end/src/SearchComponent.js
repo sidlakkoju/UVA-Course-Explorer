@@ -51,7 +51,7 @@ function SearchComponent() {
 
   return (
     <div>
-      <div><textarea value={searchInput} onChange={handleInputChange} /></div>
+      <div><textarea placeholder="What do you want to learn about?" value={searchInput} onChange={handleInputChange} /></div>
       <div><button onClick={handleSearch}>Search</button></div>
       <div>{isLoading && <img src={sabreImage} className="App-logo" alt="logo" />}</div>
       <div>{isLoading && <h5>Loading...</h5>}</div>
