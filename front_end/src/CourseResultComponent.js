@@ -10,6 +10,31 @@ subject
 
 const CourseResultComponent = (props) => {
   const [isActive, setIsActive] = useState(false);
+
+
+  const handleClick = async () => {
+    setIsActive(!isActive);
+    console.log("clicked");
+
+    const response = await fetch("/detailed_info", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ catalog_number: props.catalog_number, mnemonic: props.subject}),
+    });
+    const data = await response.json();
+
+    if (data && Array.isArray(data)) {
+      const searchResults = data.map((result, index) => (
+        <div key={index}>
+          <body>{result.location}</body>
+        </div>
+      ));
+      console.log(searchResults);
+      setSearchResults(searchResults);
+    }
+  }
   
   
   return (
@@ -18,7 +43,7 @@ const CourseResultComponent = (props) => {
         <div className="accordion-item">
           <div 
           className="accordion-title"
-          onClick={() => setIsActive(!isActive)}>
+          onClick={handleClick}>
             <div>
               {props.subject} {props.catalog_number}: {props.name} ({props.level})
             </div>
