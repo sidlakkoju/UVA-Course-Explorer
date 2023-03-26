@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import CourseResultComponent from './CourseResultComponent';
 
+import logo from './logo.svg';
+import './App.css';
+
 
 
 function SearchComponent() {
@@ -48,9 +51,8 @@ function SearchComponent() {
     <div>
       <textarea value={searchInput} onChange={handleInputChange} />
       <button onClick={handleSearch}>Search</button>
-      {isLoading && <p>Loading...</p>}
+      <div>{isLoading && <img src={logo} className="App-logo" alt="logo" />}</div>
       <div>{searchResults}</div>
-      
     </div>
   );
 }
