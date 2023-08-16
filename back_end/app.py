@@ -69,8 +69,6 @@ def populate_detailed_info(json_results):
         print("Getting data for " + subject_mnemonic + " " + str(catalog_nbr))
 
         for session in array:       # for each meeting session of the class we're looking at
-
-
             # need to filter out results cuz SIS API is sometimes weird
             if str(session['subject']) != subject_mnemonic or str(session['catalog_nbr']) != catalog_nbr:
                 continue
@@ -141,7 +139,6 @@ def search():
 
 @app.route('/detailed_info', methods=['POST'])
 def get_detailed_info():
-
     '''
     print(detailed_info.keys())
     print("Getting detailed info")
