@@ -29,7 +29,7 @@ function App() {
       <header className="App-header">
 
         <p style={{fontFamily:'Courier', fontSize:'60px'}}>UVA Course Explorer</p>
-        <div><PlotlyGraph src="/graph.html" width="2000px" height="850px" /></div>
+        <div><PlotlyGraph src="/graph.html" width="1800px" height="700px" /></div>
         
         <div><SearchComponent /></div>
         
