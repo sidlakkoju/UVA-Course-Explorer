@@ -71,7 +71,7 @@ const CourseResultComponent = (props) => {
             <div>{isActive ? '-' : '+'}</div>
           </div>
           <div className="accordion-content">
-            <body style={{fontWeight:'bold'}}>Similarity Score: {props.similarity_score}</body>
+            <body style={{fontWeight:'bold'}}>Similarity Score: {props.similarity_score.toFixed(3)}</body>
             <body style={{fontWeight:'bold'}}>Credits: {props.credits}</body>
             <body>{props.description}</body>
             <button onClick={handleMoreLikeThisButtonClick}>More like this</button>
