@@ -131,9 +131,16 @@ def populate_detailed_info(json_results):
 @app.route('/search', methods=['POST'])
 def search():
     search_input = request.json['searchInput']
-    json_results = get_top_results_json(search_input, n=10)
+    json_results = get_top_search_results_json(search_input, n=10)
     t = threading.Thread(target=populate_detailed_info, args=(json_results,))
     t.start()
+    return json_results
+
+
+@app.route('/similar_courses', methods=['POST'])
+def similar_courses():
+    mnemonic, catalog_number = str(request.json['mnemonic']), int(request.json['catalog_number'])
+    json_results = get_similar_courses(mnemonic, catalog_number, n=10)
     return json_results
 
 

@@ -17,7 +17,6 @@ const CourseResultComponent = (props) => {
   const [sessions, setSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleClick = async () => {
     setIsActive(!isActive);
     setIsLoading(true);
@@ -54,8 +53,11 @@ const CourseResultComponent = (props) => {
       setSessions(sessions);
     }
   }
-  
-  
+
+  const handleMoreLikeThisButtonClick = () => {
+      props.onMoreLikeThisClick(props.mnemonic, props.catalog_number);
+  }
+
   return (
     <React.Fragment>
       <div className="accordion" style={{paddingBottom:'20px'}}>
@@ -72,6 +74,7 @@ const CourseResultComponent = (props) => {
             <body style={{fontWeight:'bold'}}>Similarity Score: {props.similarity_score}</body>
             <body style={{fontWeight:'bold'}}>Credits: {props.credits}</body>
             <body>{props.description}</body>
+            <button onClick={handleMoreLikeThisButtonClick}>More like this</button>
           </div>
         </div>
         {isActive && <div className="accordion-content">

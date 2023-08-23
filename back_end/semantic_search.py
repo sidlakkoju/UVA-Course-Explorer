@@ -29,6 +29,10 @@ with open('course_data_dict.pkl', 'rb') as data_dict_file:
     course_data_dict = pickle.load(data_dict_file)
 
 
+with open('data_to_index_dict.pkl', 'rb') as data_to_index_file:
+   data_to_index_dict = pickle.load(data_to_index_file)
+
+
 def get_embedding(text, model="text-embedding-ada-002"):
    text = text.replace("\n", " ")
    return openai.Embedding.create(input = [text], model=model)['data'][0]['embedding']
@@ -50,8 +54,7 @@ def cosine_similarity_search(query_vector, embedding_matrix):
     return similarities
 
 
-def get_top_results_json(query, n=10):
-   query_vector = get_embedding(query, model='text-embedding-ada-002')
+def get_top_n_data(query_vector, n=10):
    similarities = cosine_similarity_search(query_vector, embedding_matrix)
 
    top_n_indices = np.argsort(similarities)[::-1][:n]
@@ -61,13 +64,30 @@ def get_top_results_json(query, n=10):
    for i in range(n):
       matrix_index = top_n_indices[i]
       top_n_data[i]["similarity_score"] = similarities[matrix_index]
-   
+   return top_n_data
+
+
+def get_top_search_results_json(query, n=10):
+   query_vector = get_embedding(query, model='text-embedding-ada-002')
+   top_n_data = get_top_n_data(query_vector, n)
    return json.dumps(top_n_data)
+
+
+
+def get_similar_courses(mnemonic, catalog_number, n=10):
+   id_tuple = (mnemonic, catalog_number)
+   if not id_tuple in data_to_index_dict.keys():
+      print("no matching")
+      return json.dumps([])   # no matching courses
+   index = data_to_index_dict[id_tuple]
+   query_vector = embedding_matrix[index]
+   top_n_data = get_top_n_data(query_vector, n+1)
+   return json.dumps(top_n_data[1:])
+
 
 
 def get_top_results_json_old(query, n=10):
    df = get_top_results_df(query, n)
-   #    print(df)
    df.drop(columns=['ada_embedding', 'n_tokens', 'acad_org', 'class_nbr'], inplace=True)
    df = df.rename(columns={'descr': 'name',
                            'acad_career_descr' : 'level',
