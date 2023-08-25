@@ -75,8 +75,8 @@ function SearchComponent() {
       body: JSON.stringify({
         mnemonic: mnemonicInput, 
         catalog_number: catalogNumberInput,
-        acad_career_decr: academicLevelFilter,
-        strm: semesterFilter
+        academicLevelFilter: academicLevelFilter,
+        semesterFilter: semesterFilter
       })
     });
 
