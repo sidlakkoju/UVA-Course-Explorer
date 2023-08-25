@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import CourseResultComponent from './CourseResultComponent';
 
 import logo from './logo.svg';
-import './App.css';
 import sabreImage from './sabre.png';
-
-
 
 
 function SearchComponent() {
@@ -13,47 +10,59 @@ function SearchComponent() {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [academicLevelFilter, setAcademicLevelFilter] = useState("all");
 
-  const handleSearchInputChange = (event) => {
-    setSearchInput(event.target.value);
-  };
+  const [semesterFilter, setSemesterFilter] = useState("all");
 
-  const handleSearch = async () => {
-    setIsLoading(true);
-    const response = await fetch("/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ searchInput }),
-    });
-    const data = await response.json();
+  function getSearchResults(data) {
     setIsLoading(false);
     if (data && Array.isArray(data)) {
       const searchResults = data.map((result, index) => (
         <div key={index}>
-          
           <CourseResultComponent  
             name={result.name}
             level={result.level}
             catalog_number={result.catalog_number}
             class_number={result.class_number}
             subject={result.subject}
-            description = {result.description}
-            mnemonic = {result.mnemonic}
-            similarity_score = {result.similarity_score}
-            credits = {result.credits}
+            description={result.description}
+            mnemonic={result.mnemonic}
+            strm={result.strm}
+            similarity_score={result.similarity_score}
+            credits={result.credits}
             onMoreLikeThisClick={handleMoreLikeThisRequest}
-
           />
         </div>
       ));
-      setSearchResults(searchResults);
+      console.log(searchResults);
+      return searchResults; // Return the populated array if data is available
+    } else {
+      return []; // Return an empty array if data is not available or not an array
     }
+  }
+
+  const handleSearchInputChange = (event) => {
+    setSearchInput(event.target.value);
   };
 
-
-
+  const handleSearch = async () => {
+    if(searchInput.length == 0) return; 
+    console.log("hello");
+    setIsLoading(true);
+    const response = await fetch("/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        searchInput: searchInput ,
+        academicLevelFilter: academicLevelFilter,
+        semesterFilter: semesterFilter
+      }),
+    });
+      const data = await response.json();
+      setSearchResults(getSearchResults(data)); 
+  };
 
   const handleMoreLikeThisRequest = async(mnemonicInput, catalogNumberInput) => {
     setSearchInput(`More like ${mnemonicInput} ${catalogNumberInput}`);
@@ -63,45 +72,79 @@ function SearchComponent() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({mnemonic: mnemonicInput, catalog_number: catalogNumberInput})
+      body: JSON.stringify({
+        mnemonic: mnemonicInput, 
+        catalog_number: catalogNumberInput,
+        acad_career_decr: academicLevelFilter,
+        strm: semesterFilter
+      })
     });
 
-    //TODO: extract this out into a separate method because it's copied from handleSearch()
     const data = await response.json();
-    setIsLoading(false);
-    if (data && Array.isArray(data)) {
-      const searchResults = data.map((result, index) => (
-        <div key={index}>
-          
-          <CourseResultComponent  
-            name={result.name}
-            level={result.level}
-            catalog_number={result.catalog_number}
-            class_number={result.class_number}
-            subject={result.subject}
-            description = {result.description}
-            mnemonic = {result.mnemonic}
-            similarity_score = {result.similarity_score}
-            credits = {result.credits}
-            onMoreLikeThisClick={handleMoreLikeThisRequest}
-          />
-        </div>
-      ));
-      //console.log(searchResults);
-      setSearchResults(searchResults);
-    }
-}
-  
+    setSearchResults(getSearchResults(data)); 
+  };
 
+
+
+  const handleAcademicLevelFiterChange = (event) => {
+    setAcademicLevelFilter(event.target.value);
+    console.log(`changed semester to ${semesterFilter}`);
+  }
+
+  const handleSemesterFilterChange = (event) => {
+    setSemesterFilter(event.target.value);
+    console.log(`changed semester to ${semesterFilter}`);
+  }
+
+
+  const academicLevelFilterOptions = [
+    { value: 'all', label: 'All' },
+
+    { value: 'Undergraduate', label: 'Undergraduate' },
+    { value: 'Graduate', label: 'Graduate' },
+    { value: 'Law', label: 'Law' },
+    { value: 'Graduate Business', label: 'Graduate Business'},
+    { value: 'Medical School', label: 'Medical School'},
+    {value: "Non-Credit", label: 'Non-Credit'}
+  ]
+
+
+  const semesterFilterOptions = [
+    { value: 'all', label: 'All Semesters' },
+    { value: "latest", label: "Only Fall 23"}
+  ]
+  
   return (
     <div>
       <div><textarea placeholder="What do you want to learn about?" value={searchInput} onChange={handleSearchInputChange} /></div>
       <div><button onClick={handleSearch} style={{fontFamily:'Courier New', fontWeight:'bold'}}>Search</button></div>
+
+      <div>
+                <label htmlFor="dropdown">Academic Level:</label>
+                <select id="dropdown" value={academicLevelFilter} onChange={handleAcademicLevelFiterChange}>
+                {academicLevelFilterOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                  {option.label}
+                  </option>))}
+
+                </select>
+
+
+                <label htmlFor="dropdown">Semester:</label>
+                <select id="dropdown" value={semesterFilter} onChange={handleSemesterFilterChange}>
+                    {semesterFilterOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+                  ))}
+                </select>
+      </div>
+
       <div>{isLoading && <img src={sabreImage} className="App-logo" alt="logo" />}</div>
       <div>{isLoading && <h5>Running the OpenAI Embedding Engine...</h5>}</div>
       <div>{searchResults}</div>
     </div>
   );
-}
 
+}
 export default SearchComponent;
